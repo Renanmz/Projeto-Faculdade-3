@@ -1,0 +1,95 @@
+aplicação WEB a opção de registrar e consultar ocorrencias (PRAGAS E DOENÇAS NAS PLANTAÇÕES) ;
+
+
+REGISTRAR: 
+nome da fazenda;
+cidade;
+qual a PRAGA ou a DOENÇA;
+região do acontecimento;
+data (estação do ano);
+clima atual;
+
+--------
+
+FILTROS:
+data (estação do ano);
+peste, doença;
+região;
+
+--------
+
+PRINCIPAIS PRAGAS(DISPONIVEL PARA SELECIONAR EM QUESTOES DE ESCOLHA
+
+Lagarta-do-cartucho (Spodoptera frugiperda)
+Ataca: Milho, algodão, soja
+Danos: Perfura folhas e espigas
+
+Mosca-branca (Bemisia tabaci)
+Ataca: Soja, tomate, feijão, algodão
+Danos: Sugam seiva e transmitem viroses
+
+Percevejo-marrom (Euschistus heros)
+Ataca: Soja
+Danos: Danifica vagens e grãos
+
+Broca-do-café (Hypothenemus hampei)
+Ataca: Café
+Danos: Perfura frutos, reduz produtividade e qualidade
+
+Cigarrinha-do-milho (Dalbulus maidis)
+Ataca: Milho
+Danos: Transmissão de doenças como enfezamento
+
+---------------
+
+PRINCIPAIS DOENÇAS (DISPONIVEL PARA SELECIONAR EM QUESTOES DE ESCOLHA):
+
+Ferrugem Asiática (Phakopsora pachyrhizi)
+Ataca: Soja
+Sintomas: Manchas nas folhas, queda precoce
+
+Mofo-branco (Sclerotinia sclerotiorum)
+Ataca: Soja, feijão, girassol
+Sintomas: Apodrecimento das hastes e ramos
+
+Sigatoka-negra (Mycosphaerella fijiensis)
+Ataca: Banana
+Sintomas: Manchas escuras nas folhas, prejudica fotossíntese
+
+Cancro Cítrico (Xanthomonas citri)
+Ataca: Citros
+Sintomas: Lesões nas folhas, frutos e ramos
+
+Míldio (Plasmopara viticola)
+Ataca: Videiras
+Sintomas: Manchas oleosas e bolor branco na parte inferior das folhas
+
+--------------
+
+GERAR RELATORIO:
+com filtros (clima, estação, doença, praga, região e data);
+
+---------------
+
+Só agricultores podem registrar;
+
+---------------
+
+antes de entrar no sistema, há informações iniciais sobre estatisticas agricolas 
+
+--------------
+
+requer conexão a internet
+
+
+
+
+
+
+
+
+
+
+
+OBJETIVO:
+OFERECER APOIO AO AGRO(FAZENDAS)
