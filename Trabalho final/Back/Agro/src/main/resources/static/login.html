@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <h2>Sistema de Monitoramento</h2>
+    <input id="usuario" type="text" placeholder="Usuário" />
+    <input id="senha" type="password" placeholder="Senha" />
+    <button onclick="entrar()">Entrar</button>
+  </div>
+
+  <script>
+    function entrar() {
+      const usuario = document.getElementById("usuario").value;
+      const senha = document.getElementById("senha").value;
+
+      fetch("http://localhost:8080/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          username: usuario,
+          password: senha,
+        }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            window.location.href = "index.html";
+          } else {
+            alert("Login inválido.");
+          }
+        })
+        .catch((err) => {
+          console.error("Erro no login:", err);
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Sistema de Monitoramento</h1>
+    <nav>
+      <button onclick="showTab('doencas')">Doenças</button>
+      <button onclick="showTab('fazendas')">Fazendas</button>
+      <button onclick="showTab('ocorrencias')">Ocorrências</button>
+    </nav>
+  </header>
+  <div class="top-bar">
+  <!-- outros botões -->
+  <a href="relatorio-ocorrencias-filtros.html" class="btn-relatorio">📊 Gerar Relatórios</a>
+</div>
+
+
+  <main>
+    <!-- Doenças -->
+    <section id="doencas" class="tab">
+      <h2>Cadastro de Doença</h2>
+      <form id="form-doenca">
+        <input type="text" name="nome" placeholder="Nome da Doença" required />
+        <input type="text" name="tipo" placeholder="Tipo (doença/praga)" required />
+        <textarea name="descricao" placeholder="Descrição" required></textarea>
+        <button type="submit">Cadastrar</button>
+      </form>
+      <h3>Doenças Cadastradas</h3>
+      <table id="tabela-doencas"><thead><tr><th>Nome</th><th>Tipo</th><th>Descrição</th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <!-- Fazendas -->
+    <section id="fazendas" class="tab hidden">
+      <h2>Cadastro de Fazenda</h2>
+      <form id="form-fazenda">
+        <input type="text" name="nomefazenda" placeholder="Nome da Fazenda" required />
+        <input type="text" name="cidade" placeholder="Cidade" required />
+        <input type="text" name="regiao" placeholder="Região" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+      <h3>Fazendas Cadastradas</h3>
+      <table id="tabela-fazendas"><thead><tr><th>Nome</th><th>Cidade</th><th>Região</th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <!-- Ocorrências -->
+    <section id="ocorrencias" class="tab hidden">
+      <h2>Cadastro de Ocorrência</h2>
+      <form id="form-ocorrencia">
+        <input type="text" name="estacao" placeholder="Estação" required />
+        <input type="text" name="clima" placeholder="Clima" required />
+        <textarea name="descricao" placeholder="Descrição" required></textarea>
+        <input type="number" name="fazendaid" placeholder="ID da Fazenda" required />
+        <input type="number" name="doencaid" placeholder="ID da Doença" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+      <h3>Ocorrências Registradas</h3>
+      <table id="tabela-ocorrencias"><thead><tr><th>Estação</th><th>Clima</th><th>Descrição</th><th>Fazenda ID</th><th>Doença ID</th></tr></thead><tbody></tbody></table>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
