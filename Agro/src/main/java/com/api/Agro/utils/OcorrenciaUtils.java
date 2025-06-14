@@ -82,6 +82,7 @@ FazendaModel fazenda1 = new FazendaModel();
 		List<OcorrenciaModel> ocorrenciaList = new ArrayList<>();
 		OcorrenciaModel ocorrencia1 = new OcorrenciaModel();
 		
+		ocorrencia1.setNumero("0001");
 		ocorrencia1.setEstacao("Outono");
 		ocorrencia1.setClima("Nublado");
 		ocorrencia1.setDoenca(doenca1);
@@ -97,7 +98,7 @@ FazendaModel fazenda1 = new FazendaModel();
 		
 		OcorrenciaModel ocorrencia2 = new OcorrenciaModel();
 		
-
+		ocorrencia2.setNumero("0002");
 		ocorrencia2.setEstacao("Primavera");
 		ocorrencia2.setClima("Ensolarado");
 		ocorrencia2.setDoenca(doenca2);

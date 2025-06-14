@@ -23,6 +23,9 @@ public class OcorrenciaModel implements Serializable  {
 	@GeneratedValue(strategy = GenerationType.AUTO) //geração automatica do id
 	private long id;
 	
+	@Column(nullable = false, unique = true)
+    private String numero;
+	
 	@Column(nullable = false, length = 70)
 	private String estacao;
 	
@@ -50,6 +53,14 @@ public class OcorrenciaModel implements Serializable  {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public String getNumero() {
+	    return numero;
+	}
+
+	public void setNumero(String numero) {
+	    this.numero = numero;
 	}
 
 	public String getEstacao() {

@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class DoencaController {
 	@Autowired 
 	DoencaRepository doencarepository;
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/doencas")
 	public ResponseEntity<List<DoencaModel>> getDoencas() {
 		List<DoencaModel> doencas = doencarepository.findAll();
@@ -40,6 +42,7 @@ public class DoencaController {
 		}
 	}
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/doenca/{id}")
 	public ResponseEntity<Object> getDoencaId(@PathVariable("id") long id) {
 		Optional<DoencaModel> agroModelOptional = doencarepository.findById(id);
@@ -50,6 +53,7 @@ public class DoencaController {
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
 	
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/newdoenca")
 	public ResponseEntity<Object> saveDoenca(@RequestBody @Valid DoencaRecordDto agrorecorddto) {
 		var doencaModel = new DoencaModel();
@@ -58,6 +62,7 @@ public class DoencaController {
 	return ResponseEntity.status(HttpStatus.CREATED).body(doencarepository.save(doencaModel));
 	}
 	
+	@CrossOrigin(origins = "*")
 	@DeleteMapping(value = "/deletedoenca/{id}")
 	public ResponseEntity<Object> deleteDoenca(@PathVariable("id") long id) {
 		Optional<DoencaModel> agroModelOptional = doencarepository.findById(id);
@@ -69,6 +74,7 @@ public class DoencaController {
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
 	
+	@CrossOrigin(origins = "*")
 	@PutMapping(value = "/updatedoenca/{id}")
 	public ResponseEntity<Object> updateDoenca(@PathVariable("id") long id, @RequestBody @Valid DoencaRecordDto agrorecorddto) {
 	    Optional<DoencaModel> agroModelOptional = doencarepository.findById(id);

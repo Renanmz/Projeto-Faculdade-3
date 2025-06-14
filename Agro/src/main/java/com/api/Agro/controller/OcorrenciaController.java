@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,8 @@ public class OcorrenciaController {
 
 	@Autowired
 	FazendaRepository fazendaRepository;
-	
+
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/ocorrencias")
 	public ResponseEntity<List<OcorrenciaModel>> getOcorrencias() {
 		List<OcorrenciaModel> ocorrencias = ocorrenciarepository.findAll();
@@ -49,7 +51,8 @@ public class OcorrenciaController {
 			return ResponseEntity.status(HttpStatus.OK).body(ocorrencias);
 		}
 	}
-	
+
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/ocorrencia/{id}")
 	public ResponseEntity<Object> getOcorrenciaId(@PathVariable("id") long id) {
 		Optional<OcorrenciaModel> agroModelOptional = ocorrenciarepository.findById(id);
@@ -59,7 +62,8 @@ public class OcorrenciaController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
-	
+
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/newocorrencia")
 	public ResponseEntity<Object> saveOcorrencia(@RequestBody @Valid OcorrenciaRecordDto agrorecorddto) {
 
@@ -77,7 +81,8 @@ public class OcorrenciaController {
 		ocorrenciaModel.setDoenca(doenca);
 	return ResponseEntity.status(HttpStatus.CREATED).body(ocorrenciarepository.save(ocorrenciaModel));
 	}
-	
+
+	@CrossOrigin(origins = "*")
 	@DeleteMapping(value = "/deleteocorrencia/{id}")
 	public ResponseEntity<Object> deleteOcorrencia(@PathVariable("id") long id) {
 		Optional<OcorrenciaModel> agroModelOptional = ocorrenciarepository.findById(id);
@@ -88,7 +93,8 @@ public class OcorrenciaController {
 		ocorrenciarepository.delete(agroModelOptional.get());
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
-	
+
+	@CrossOrigin(origins = "*")
 	@PutMapping(value = "/updateocorrencia/{id}")
 	public ResponseEntity<Object> updateOcorrencia(@PathVariable("id") long id, @RequestBody @Valid OcorrenciaRecordDto agrorecorddto) {
 	    Optional<OcorrenciaModel> agroModelOptional = ocorrenciarepository.findById(id);
@@ -107,6 +113,7 @@ public class OcorrenciaController {
 		
 		    BeanUtils.copyProperties(agrorecorddto, ocorrenciaToUpdate, "id");
 	    ocorrenciaToUpdate.setData(LocalDate.now(ZoneId.of("UTC")));
+	    ocorrenciaToUpdate.setNumero(agrorecorddto.numero());
 	    ocorrenciaToUpdate.setEstacao(agrorecorddto.estacao());
 	    ocorrenciaToUpdate.setClima(agrorecorddto.clima());
 	    ocorrenciaToUpdate.setDescricao(agrorecorddto.descricao());

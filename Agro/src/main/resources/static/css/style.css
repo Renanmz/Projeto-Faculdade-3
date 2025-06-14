@@ -1,0 +1,124 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #eef7ec;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background-color: #2e8658;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+nav {
+  background-color: #3fa76d;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+nav button {
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: #2e8658;
+  color: white;
+  cursor: pointer;
+}
+main {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #d4edda;
+}
+form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+input,
+button[type="submit"] {
+  padding: 6px;
+  font-size: 14px;
+}
+
+.tab {
+  display: none;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.tab:not(.hidden) {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.aba-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aba-header .botoes-acoes {
+  display: flex;
+  gap: 8px; 
+}
+.aba-header h2 {
+  margin: 0;
+}
+
+.btn-atualizar {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  height: 32px;
+}
+
+.btn-atualizar:hover {
+  background-color: #0056b3;
+}
+
+.btn-deletar {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-deletar:hover {
+  background-color: #c62828;
+}
+
+.btn-cadastrar {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}

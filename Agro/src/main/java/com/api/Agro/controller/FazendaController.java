@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class FazendaController {
 	@Autowired 
 	FazendaRepository fazendarepository;
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/fazendas")
 	public ResponseEntity<List<FazendaModel>> getFazendas() {
 		List<FazendaModel> fazendas = fazendarepository.findAll();
@@ -39,6 +41,7 @@ public class FazendaController {
 		}
 	}
 	
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/fazenda/{id}")
 	public ResponseEntity<Object> getFazendaId(@PathVariable("id") long id) {
 		Optional<FazendaModel> agroModelOptional = fazendarepository.findById(id);
@@ -49,6 +52,7 @@ public class FazendaController {
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
 	
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/newfazenda")
 	public ResponseEntity<Object> saveFazenda(@RequestBody @Valid FazendaRecordDto agrorecorddto) {
 		var fazendaModel = new FazendaModel();
@@ -57,6 +61,7 @@ public class FazendaController {
 	return ResponseEntity.status(HttpStatus.CREATED).body(fazendarepository.save(fazendaModel));
 	}
 	
+	@CrossOrigin(origins = "*")
 	@DeleteMapping(value = "/deletefazenda/{id}")
 	public ResponseEntity<Object> deleteFazenda(@PathVariable("id") long id) {
 		Optional<FazendaModel> agroModelOptional = fazendarepository.findById(id);
@@ -68,6 +73,7 @@ public class FazendaController {
 		return ResponseEntity.status(HttpStatus.OK).body(agroModelOptional.get());
 	}
 	
+	@CrossOrigin(origins = "*")
 	@PutMapping(value = "/updatefazenda/{id}")
 	public ResponseEntity<Object> updateFazenda(@PathVariable("id") long id, @RequestBody @Valid FazendaRecordDto agrorecorddto) {
 	    Optional<FazendaModel> agroModelOptional = fazendarepository.findById(id);
