@@ -54,6 +54,18 @@ public class DoencaController {
 	}
 	
 	@CrossOrigin(origins = "*")
+	@GetMapping(value = "/doenca/nome/{nome}")
+	public ResponseEntity<Object> getDoencaByNome(@PathVariable("nome") String nome) {
+	    Optional<DoencaModel> doencaOptional = doencarepository.findByNome(nome);
+	    
+	    if (!doencaOptional.isPresent()) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doença não encontrada");
+	    }
+	    
+	    return ResponseEntity.status(HttpStatus.OK).body(doencaOptional.get());
+	}
+	
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/newdoenca")
 	public ResponseEntity<Object> saveDoenca(@RequestBody @Valid DoencaRecordDto agrorecorddto) {
 		var doencaModel = new DoencaModel();
