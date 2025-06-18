@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Gerenciador Agro</title>
+  <link rel="stylesheet" href="css/login.css" />
 </head>
-<body class="login-body">
+
+<body>
   <div class="login-container">
-    <h2>Sistema de Monitoramento</h2>
-    <input id="usuario" type="text" placeholder="Usuário" />
-    <input id="senha" type="password" placeholder="Senha" />
-    <button onclick="entrar()">Entrar</button>
+    <h2>Login</h2>
+    <form onsubmit="entrar(); return false;">
+      <input type="text" name="username" id="usuario" placeholder="Usuário" required />
+      <input type="password" name="password" id="senha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+    </form>
   </div>
 
   <script>
-    function entrar() {
-      const usuario = document.getElementById("usuario").value;
-      const senha = document.getElementById("senha").value;
+     function entrar() {
+    const usuario = document.querySelector('[name="username"]').value;
+    const senha = document.querySelector('[name="password"]').value;
 
-      fetch("http://localhost:8080/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          username: usuario,
-          password: senha,
-        }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            window.location.href = "index.html";
-          } else {
-            alert("Login inválido.");
-          }
-        })
-        .catch((err) => {
-          console.error("Erro no login:", err);
-        });
-    }
+    fetch("http://localhost:8080/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username: usuario,
+        password: senha,
+      }),
+    })
+    .then((res) => {
+      if (res.ok) {
+        sessionStorage.setItem("autenticado", "true");
+        window.location.href = "index.html";
+      } else {
+        alert("Login inválido.");
+      }
+    })
+    .catch((err) => {
+      console.error("Erro no login:", err);
+    });
+  }
   </script>
 </body>
+
 </html>

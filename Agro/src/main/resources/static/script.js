@@ -13,6 +13,11 @@ function showTab(tabId) {
   } else if (tabId === 'aba-mapa') {
     setTimeout(() => carregarMapa(), 50); // Garante que o div#map já esteja visível
   }
+  const logado = sessionStorage.getItem("autenticado") === "true";
+  if (logado) {
+    const tipo = tabId.replace('aba-', '');
+    alternarCadastro(tipo);
+  }
 }
 
 document.getElementById('form-doenca').addEventListener('submit', async function (e) {
@@ -87,6 +92,15 @@ async function carregarDoencas() {
     }
   });
 }
+document.getElementById('buscaDoenca').addEventListener('input', function () {
+  const filtro = this.value.toLowerCase();
+  const linhas = document.querySelectorAll('#tabela-doencas tbody tr');
+
+  linhas.forEach(linha => {
+    const nome = linha.children[0].textContent.toLowerCase();
+    linha.style.display = nome.includes(filtro) ? '' : 'none';
+  });
+});
 
 document.getElementById('form-fazenda').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -264,8 +278,28 @@ async function carregarOcorrencias() {
   });
 }
 
+document.getElementById('buscaOcorrencia').addEventListener('input', function () {
+  const filtro = this.value.toLowerCase();
+  const linhas = document.querySelectorAll('#tabela-ocorrencias tbody tr');
+
+  linhas.forEach(linha => {
+    const numero = linha.children[0].textContent.toLowerCase();
+    linha.style.display = numero.includes(filtro) ? '' : 'none';
+  });
+});
+
+document.getElementById("btn-logout")?.addEventListener("click", () => {
+  sessionStorage.removeItem("autenticado");
+  location.reload();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-  showTab('aba-doenca');
+  showTab('aba-mapa');
+  verificarLogin();
+});
+
+document.getElementById("btn-login").addEventListener("click", () => {
+  window.location.href = "login.html";
 });
 
 function alternarCadastro(tipo) {
@@ -347,10 +381,13 @@ function carregarIdsParaDelecao(tipo) {
       data.forEach(item => {
         const option = document.createElement('option');
         option.value = item.id;
-        option.text = `ID ${item.id} - ${tipo === 'doenca' ? item.nome :
-            tipo === 'fazenda' ? item.nome :
-              'Ocorrência'
-          }`;
+        if (tipo === 'doenca') {
+          option.text = `ID ${item.id} - ${item.nome}`;
+        } else if (tipo === 'fazenda') {
+          option.text = `ID ${item.id} - ${item.nomefazenda}`;
+        } else if (tipo === 'ocorrencia') {
+          option.text = `ID ${item.id} - Número ${item.numero}`;
+        }
         select.appendChild(option);
       });
     })
@@ -368,7 +405,7 @@ function deletarDoenca() {
         if (response.ok) {
           alert("Doença deletada com sucesso!");
           carregarIdsParaDelecao("doenca");
-          carregarDoencas(); // Atualiza tabela
+          carregarDoencas();
         } else {
           alert("Erro ao deletar doença.");
         }
@@ -388,7 +425,7 @@ function deletarFazenda() {
         if (response.ok) {
           alert("Fazenda deletada com sucesso!");
           carregarIdsParaDelecao("fazenda");
-          carregarFazendas(); // Atualiza tabela
+          carregarFazendas();
         } else {
           alert("Erro ao deletar fazenda.");
         }
@@ -408,7 +445,7 @@ function deletarOcorrencia() {
         if (response.ok) {
           alert("Ocorrência deletada com sucesso!");
           carregarIdsParaDelecao("ocorrencia");
-          carregarOcorrencias(); // Atualiza tabela
+          carregarOcorrencias();
         } else {
           alert("Erro ao deletar ocorrência.");
         }
@@ -422,7 +459,7 @@ function capitalizar(texto) {
 }
 
 function carregarMapa() {
-  if (window._mapaCarregado) return; // evita carregar 2x
+  if (window._mapaCarregado) return;
   window._mapaCarregado = true;
 
   const map = L.map('map').setView([-27.5954, -48.5480], 7);
@@ -490,4 +527,43 @@ function carregarMapa() {
 
 function agendarVacina(cidade, doenca) {
   alert(`Redirecionando para agendamento de vacina contra ${doenca} em ${cidade}.`);
+}
+
+function verificarAutenticacao() {
+  const logado = sessionStorage.getItem("autenticado");
+  if (!logado) {
+    alert("Você precisa estar logado para acessar essa funcionalidade.");
+    window.location.href = "login.html";
+    return false;
+  }
+  return true;
+}
+
+function verificarLogin() {
+  const isLoggedIn = sessionStorage.getItem("autenticado") === "true";
+
+  // Controla botões e formulários
+  document.querySelectorAll('.btn-cadastrar, .btn-atualizar, .btn-deletar').forEach(btn => {
+    btn.classList.toggle('hidden', !isLoggedIn);
+  });
+
+  document.querySelectorAll('[id^="cadastro-"], [id^="atualizar-"], [id^="deletar-"]').forEach(div => {
+    div.classList.toggle('hidden', !isLoggedIn);
+  });
+
+  // Oculta título das abas se não estiver logado
+  document.querySelectorAll('.aba-header h2').forEach(h2 => {
+    const texto = h2.textContent.trim();
+    const deveOcultar = texto.startsWith("Cadastro de") || texto.startsWith("Atualizar") || texto.startsWith("Deletar");
+    h2.classList.toggle('ocultar-cadastro-h2', !isLoggedIn && deveOcultar);
+  });
+  if (isLoggedIn) {
+    const abas = ["doenca", "fazenda", "ocorrencia"];
+    abas.forEach(tipo => {
+      const aba = document.getElementById(`aba-${tipo}`);
+      if (!aba.classList.contains("hidden")) {
+        alternarCadastro(tipo); // mostra cadastro, esconde os outros
+      }
+    });
+  }
 }

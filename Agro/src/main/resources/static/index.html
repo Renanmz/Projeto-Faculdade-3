@@ -7,12 +7,16 @@
   <title>Gerenciador Agro</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body>
   <header>
     <h1>Gerenciador Agro</h1>
+    <div class="header-buttons">
+      <button id="btn-login" class="btn-login">Fazer Login</button>
+      <button id="btn-logout" class="btn-logout">Sair</button>
+    </div>
   </header>
 
   <nav>
@@ -30,45 +34,57 @@
 
   <!-- Aba Doença -->
   <div id="aba-doenca" class="tab">
-    <div class="aba-header">
-      <h2>Cadastro de Doença</h2>
-      <div class="botoes-acoes">
-        <button class="btn-cadastrar" onclick="alternarCadastro('doenca')">Cadastrar</button>
-        <button class="btn-atualizar" onclick="alternarFormulario('doenca')">Atualizar</button>
-        <button class="btn-deletar" onclick="alternarDelecao('doenca')">Delete</button>
+    <div id="acoes-doenca" class="restrito">
+      <div class="aba-header">
+        <h2 id="titulo-doenca">Cadastro de Doença</h2>
+        <div class="botoes-acoes">
+          <button class="btn-cadastrar" onclick="alternarCadastro('doenca')">Cadastrar</button>
+          <button class="btn-atualizar" onclick="alternarFormulario('doenca')">Atualizar</button>
+          <button class="btn-deletar" onclick="alternarDelecao('doenca')">Delete</button>
+        </div>
+      </div>
+
+      <div id="cadastro-doenca">
+        <form id="form-doenca">
+          <input name="nome" placeholder="Nome" required />
+          <select name="tipo" required>
+            <option value="">Selecione o Tipo</option>
+            <option value="Doença">Doença</option>
+            <option value="Praga">Praga</option>
+          </select>
+          <input name="descricao" placeholder="Descrição" required />
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+      <div id="atualizar-doenca" class="hidden">
+        <form id="form-update-doenca">
+          <select id="update-doenca-id" required></select>
+          <input name="nome" placeholder="Nome" required />
+          <select name="tipo" required>
+            <option value="">Selecione o Tipo</option>
+            <option value="Doença">Doença</option>
+            <option value="Praga">Praga</option>
+          </select>
+          <input name="descricao" placeholder="Descrição" required />
+          <button type="submit">Atualizar</button>
+        </form>
+      </div>
+
+      <div id="deletar-doenca" class="hidden">
+        <label for="idDeletarDoenca">ID da Doença:</label>
+        <select id="idDeletarDoenca"></select>
+        <button onclick="deletarDoenca()">Confirmar Deleção</button>
       </div>
     </div>
-    <div id="cadastro-doenca">
-      <form id="form-doenca">
-        <input name="nome" placeholder="Nome" required />
-        <select name="tipo" required>
-          <option value="">Selecione o Tipo</option>
-          <option value="Doença">Doença</option>
-          <option value="Praga">Praga</option>
-        </select>
-        <input name="descricao" placeholder="Descrição" required />
-        <button type="submit">Cadastrar</button>
-      </form>
+
+    <div id="mensagem-nao-autenticado-doenca" class="mensagem-login hidden">
+      <p>Você precisa estar logado para cadastrar, atualizar ou deletar.</p>
+      <button onclick="window.location.href='login.html'">Login para cadastrar</button>
     </div>
 
-    <div id="atualizar-doenca" class="hidden">
-      <form id="form-update-doenca">
-        <select id="update-doenca-id" required></select>
-        <input name="nome" placeholder="Nome" required />
-        <select name="tipo" required>
-          <option value="">Selecione o Tipo</option>
-          <option value="Doença">Doença</option>
-          <option value="Praga">Praga</option>
-        </select>
-        <input name="descricao" placeholder="Descrição" required />
-        <button type="submit">Atualizar</button>
-      </form>
-    </div>
-
-    <div id="deletar-doenca" class="hidden">
-      <label for="idDeletarDoenca">ID da Doença:</label>
-      <select id="idDeletarDoenca"></select>
-      <button onclick="deletarDoenca()">Confirmar Deleção</button>
+    <div class="busca-doenca">
+      <input type="text" id="buscaDoenca" placeholder="Buscar por nome da doença..." />
     </div>
 
     <table id="tabela-doencas">
@@ -85,37 +101,45 @@
 
   <!-- Aba Fazenda -->
   <div id="aba-fazenda" class="tab hidden">
-    <div class="aba-header">
-      <h2>Cadastro de Fazenda</h2>
-      <div class="botoes-acoes">
-        <button class="btn-cadastrar" onclick="alternarCadastro('fazenda')">Cadastrar</button>
-        <button class="btn-atualizar" onclick="alternarFormulario('fazenda')">Atualizar</button>
-        <button class="btn-deletar" onclick="alternarDelecao('fazenda')">Delete</button>
+    <div id="acoes-fazenda" class="restrito">
+      <div class="aba-header">
+        <h2 id="titulo-fazenda">Cadastro de Fazenda</h2>
+        <div class="botoes-acoes">
+          <button class="btn-cadastrar" onclick="alternarCadastro('fazenda')">Cadastrar</button>
+          <button class="btn-atualizar" onclick="alternarFormulario('fazenda')">Atualizar</button>
+          <button class="btn-deletar" onclick="alternarDelecao('fazenda')">Delete</button>
+        </div>
+      </div>
+
+      <div id="cadastro-fazenda">
+        <form id="form-fazenda">
+          <input name="nomefazenda" placeholder="Nome da Fazenda" required />
+          <input name="cidade" placeholder="Cidade" required />
+          <input name="regiao" placeholder="Região" required />
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+      <div id="atualizar-fazenda" class="hidden">
+        <form id="form-update-fazenda">
+          <select id="update-fazenda-id" required></select>
+          <input name="nomefazenda" placeholder="Nome da Fazenda" required />
+          <input name="cidade" placeholder="Cidade" required />
+          <input name="regiao" placeholder="Região" required />
+          <button type="submit">Atualizar</button>
+        </form>
+      </div>
+
+      <div id="deletar-fazenda" class="hidden">
+        <label for="idDeletarFazenda">ID da Fazenda:</label>
+        <select id="idDeletarFazenda"></select>
+        <button onclick="deletarFazenda()">Confirmar Deleção</button>
       </div>
     </div>
-    <div id="cadastro-fazenda">
-      <form id="form-fazenda">
-        <input name="nomefazenda" placeholder="Nome da Fazenda" required />
-        <input name="cidade" placeholder="Cidade" required />
-        <input name="regiao" placeholder="Região" required />
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
 
-    <div id="atualizar-fazenda" class="hidden">
-      <form id="form-update-fazenda">
-        <select id="update-fazenda-id" required></select>
-        <input name="nomefazenda" placeholder="Nome da Fazenda" required />
-        <input name="cidade" placeholder="Cidade" required />
-        <input name="regiao" placeholder="Região" required />
-        <button type="submit">Atualizar</button>
-      </form>
-    </div>
-
-    <div id="deletar-fazenda" class="hidden">
-      <label for="idDeletarFazenda">ID da Fazenda:</label>
-      <select id="idDeletarFazenda"></select>
-      <button onclick="deletarFazenda()">Confirmar Deleção</button>
+    <div id="mensagem-nao-autenticado-fazenda" class="mensagem-login hidden">
+      <p>Você precisa estar logado para cadastrar, atualizar ou deletar.</p>
+      <button onclick="window.location.href='login.html'">Login para cadastrar</button>
     </div>
 
     <table id="tabela-fazendas">
@@ -132,55 +156,67 @@
 
   <!-- Aba Ocorrência -->
   <div id="aba-ocorrencia" class="tab hidden">
-    <div class="aba-header">
-      <h2>Cadastro de Ocorrência</h2>
-      <div class="botoes-acoes">
-        <button class="btn-cadastrar" onclick="alternarCadastro('ocorrencia')">Cadastrar</button>
-        <button class="btn-atualizar" onclick="alternarFormulario('ocorrencia')">Atualizar</button>
-        <button class="btn-deletar" onclick="alternarDelecao('ocorrencia')">Delete</button>
+    <div id="acoes-ocorrencia" class="restrito">
+      <div class="aba-header">
+        <h2 id="titulo-ocorrencia">Cadastro de Ocorrência</h2>
+        <div class="botoes-acoes">
+          <button class="btn-cadastrar" onclick="alternarCadastro('ocorrencia')">Cadastrar</button>
+          <button class="btn-atualizar" onclick="alternarFormulario('ocorrencia')">Atualizar</button>
+          <button class="btn-deletar" onclick="alternarDelecao('ocorrencia')">Delete</button>
+        </div>
+      </div>
+
+      <div id="cadastro-ocorrencia">
+        <form id="form-ocorrencia">
+          <input name="numero" placeholder="Número da Ocorrência" required />
+          <select name="estacao" required>
+            <option value="">Selecione a Estação</option>
+            <option value="Primavera">Primavera</option>
+            <option value="Verão">Verão</option>
+            <option value="Outono">Outono</option>
+            <option value="Inverno">Inverno</option>
+          </select>
+          <input name="clima" placeholder="Clima" required />
+          <input name="descricao" placeholder="Descrição" required />
+          <select id="fazendaid" name="fazendaid" required></select>
+          <select id="doencaid" name="doencaid" required></select>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+      <div id="atualizar-ocorrencia" class="hidden">
+        <form id="form-update-ocorrencia">
+          <select id="update-ocorrencia-id" required></select>
+          <input name="numero" placeholder="Número da Ocorrência" required />
+          <select name="estacao" required>
+            <option value="">Selecione a Estação</option>
+            <option value="Primavera">Primavera</option>
+            <option value="Verão">Verão</option>
+            <option value="Outono">Outono</option>
+            <option value="Inverno">Inverno</option>
+          </select>
+          <input name="clima" placeholder="Clima" required />
+          <input name="descricao" placeholder="Descrição" required />
+          <select id="update-fazendaid" name="fazendaid" required></select>
+          <select id="update-doencaid" name="doencaid" required></select>
+          <button type="submit">Atualizar</button>
+        </form>
+      </div>
+
+      <div id="deletar-ocorrencia" class="hidden">
+        <label for="idDeletarOcorrencia">ID da Ocorrência:</label>
+        <select id="idDeletarOcorrencia"></select>
+        <button onclick="deletarOcorrencia()">Confirmar Deleção</button>
       </div>
     </div>
-    <div id="cadastro-ocorrencia">
-      <form id="form-ocorrencia">
-        <input name="numero" placeholder="Número da Ocorrência" required />
-        <select name="estacao" required>
-          <option value="">Selecione a Estação</option>
-          <option value="Primavera">Primavera</option>
-          <option value="Verão">Verão</option>
-          <option value="Outono">Outono</option>
-          <option value="Inverno">Inverno</option>
-        </select>
-        <input name="clima" placeholder="Clima" required />
-        <input name="descricao" placeholder="Descrição" required />
-        <select id="fazendaid" name="fazendaid" required></select>
-        <select id="doencaid" name="doencaid" required></select>
-        <button type="submit">Cadastrar</button>
-      </form>
+
+    <div id="mensagem-nao-autenticado-ocorrencia" class="mensagem-login hidden">
+      <p>Você precisa estar logado para cadastrar, atualizar ou deletar.</p>
+      <button onclick="window.location.href='login.html'">Login para cadastrar</button>
     </div>
 
-    <div id="atualizar-ocorrencia" class="hidden">
-      <form id="form-update-ocorrencia">
-        <select id="update-ocorrencia-id" required></select>
-        <input name="numero" placeholder="Número da Ocorrência" required />
-        <select name="estacao" required>
-          <option value="">Selecione a Estação</option>
-          <option value="Primavera">Primavera</option>
-          <option value="Verão">Verão</option>
-          <option value="Outono">Outono</option>
-          <option value="Inverno">Inverno</option>
-        </select>
-        <input name="clima" placeholder="Clima" required />
-        <input name="descricao" placeholder="Descrição" required />
-        <select id="update-fazendaid" name="fazendaid" required></select>
-        <select id="update-doencaid" name="doencaid" required></select>
-        <button type="submit">Atualizar</button>
-      </form>
-    </div>
-
-    <div id="deletar-ocorrencia" class="hidden">
-      <label for="idDeletarOcorrencia">ID da Ocorrencia:</label>
-      <select id="idDeletarOcorrencia"></select>
-      <button onclick="deletarOcorrencia()">Confirmar Deleção</button>
+    <div class="busca-ocorrencia">
+      <input type="text" id="buscaOcorrencia" placeholder="Buscar por número da ocorrência..." />
     </div>
 
     <table id="tabela-ocorrencias">

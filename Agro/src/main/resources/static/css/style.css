@@ -4,12 +4,25 @@ body {
   margin: 0;
   padding: 0;
 }
+
 header {
   background-color: #2e8658;
   color: white;
   padding: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+header h1 {
+  margin: 0;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 nav {
   background-color: #3fa76d;
   padding: 10px;
@@ -17,6 +30,7 @@ nav {
   justify-content: center;
   gap: 10px;
 }
+
 nav button {
   padding: 10px 20px;
   font-weight: bold;
@@ -26,6 +40,7 @@ nav button {
   color: white;
   cursor: pointer;
 }
+
 main {
   padding: 20px;
 }
@@ -35,20 +50,24 @@ table {
   border-collapse: collapse;
   margin-top: 20px;
 }
+
 th, td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
 }
+
 th {
   background-color: #d4edda;
 }
+
 form {
   margin-top: 10px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
+
 input,
 button[type="submit"] {
   padding: 6px;
@@ -77,8 +96,9 @@ button[type="submit"] {
 
 .aba-header .botoes-acoes {
   display: flex;
-  gap: 8px; 
+  gap: 8px;
 }
+
 .aba-header h2 {
   margin: 0;
 }
@@ -121,4 +141,72 @@ button[type="submit"] {
   margin-left: 8px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.busca-doenca,
+.busca-ocorrencia {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.busca-doenca input,
+.busca-ocorrencia input {
+  padding: 10px 20px;
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 16px;
+  width: 250px;
+  text-align: center;
+}
+
+.mensagem-login {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.mensagem-login button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-login {
+  padding: 8px 16px;
+  background-color: #1c5fb4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  background-color: #154a8c;
+}
+
+.btn-logout {
+  padding: 8px 14px;
+  background-color: #a82323;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background-color: #871a1a;
+}
+
+.ocultar-cadastro-h2 {
+  display: none !important;
 }
