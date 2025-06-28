@@ -1,70 +1,59 @@
 package com.api.Agro.config;
 
+import com.api.Agro.repository.UsuarioRepository;
+import com.api.Agro.service.UsuarioDetailsService;
+import com.api.Agro.model.Usuario;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtFilter;
+    private final UsuarioDetailsService usuarioDetailsService; // injeta aqui
+
+    public SecurityConfig(JwtAuthenticationFilter jwtFilter, UsuarioDetailsService usuarioDetailsService) {
+        this.jwtFilter = jwtFilter;
+        this.usuarioDetailsService = usuarioDetailsService;
+    }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, @Qualifier("corsConfigurationSource") CorsConfigurationSource corsConfig) throws Exception {
         http
-            .cors(cors -> {}) // habilita CORS
-            .csrf(csrf -> csrf.disable()) // desabilita CSRF (necessário para login via JS/fetch)
+            .cors(cors -> cors.configurationSource(corsConfig))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(
+                org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    new AntPathRequestMatcher("/login", "GET"),
-                    new AntPathRequestMatcher("/login", "POST"),
-                    new AntPathRequestMatcher("/logout", "POST"),
-                    new AntPathRequestMatcher("/css/**"),
-                    new AntPathRequestMatcher("/js/**"),
-                    new AntPathRequestMatcher("/doencas/**"),
-                    new AntPathRequestMatcher("/fazendas/**"),
-                    new AntPathRequestMatcher("/ocorrencias/**")
-                ).permitAll()
+                .requestMatchers("/auth/login", "/usuarios/cadastro", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/index.html", true)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-            );
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        var manager = new InMemoryUserDetailsManager();
-        manager.createUser(
-            User.builder()
-                .username("admin")
-                .password("{noop}1234") // sem codificação (apenas para testes)
-                .roles("USER")
-                .build()
-        );
-        return manager;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

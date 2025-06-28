@@ -2,13 +2,16 @@ package com.api.Agro.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,7 +38,9 @@ public class DoencaModel implements Serializable {
 	@Column(nullable = false)
 	private LocalDate data;
 	
-
+	@OneToMany(mappedBy = "doenca", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OcorrenciaModel> ocorrencias;
+	
 	public long getId() {
 		return id;
 	}
