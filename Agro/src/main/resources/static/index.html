@@ -7,6 +7,9 @@
   <title>Gerenciador Agro</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
@@ -14,197 +17,386 @@
   <header>
     <h1>Gerenciador Agro</h1>
     <div class="header-buttons">
+      <button class="btn btn-secondary ms-2" onclick="abrirRelatorio()">Relatório</button>
       <button id="btn-logout" class="btn-logout">Sair</button>
     </div>
   </header>
 
-  <nav>
-    <button onclick="showTab('aba-mapa')">Mapa</button>
-    <button onclick="showTab('aba-doenca')">Doenças</button>
-    <button onclick="showTab('aba-fazenda')">Fazendas</button>
-    <button onclick="showTab('aba-ocorrencia')">Ocorrências</button>
-  </nav>
+  <ul class="nav nav-tabs custom-tabs" id="navTabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#" onclick="showTab('aba-ocorrencia')">Ocorrências</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" onclick="showTab('aba-doenca')">Doenças</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" onclick="showTab('aba-fazenda')">Fazendas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#" onclick="showTab('aba-mapa')">Mapa</a>
+    </li>
+  </ul>
 
   <!-- Aba Mapa -->
-  <div id="aba-mapa" class="tab hidden">
+  <div id="aba-mapa" class="tab hidden mt-3">
     <h2>Mapa de Focos de Doenças em Santa Catarina</h2>
     <div id="map" style="height: 80vh; margin-top: 20px;"></div>
   </div>
 
   <!-- Aba Doença -->
-  <div id="aba-doenca" class="tab">
-    <div id="acoes-doenca" class="restrito">
-      <div class="aba-header">
-        <h2 id="titulo-doenca">Cadastro de Doença</h2>
-      </div>
-
-      <div id="cadastro-doenca">
-        <form id="form-doenca">
-          <input name="nome" placeholder="Nome" required />
-          <select name="tipo" required>
-            <option value="">Selecione o Tipo</option>
-            <option value="Doença">Doença</option>
-            <option value="Praga">Praga</option>
-          </select>
-          <input name="descricao" placeholder="Descrição" required />
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
-
-      <div class="busca-doenca">
-        <input type="text" id="buscaDoenca" placeholder="Buscar por nome da doença..." />
-      </div>
-
-      <table id="tabela-doencas">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Descrição</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div id="aba-doenca" class="tab mt-3">
+    <div class="aba-header">
+      <h2 id="titulo-doenca">Cadastro de Doença</h2>
     </div>
+    <div id="cadastro-doenca" class="mb-3 border rounded p-4 bg-light">
+      <form id="form-doenca">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Nome</label>
+            <input name="nome" class="form-control" placeholder="Nome" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label d-block">Tipo</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tipo" id="tipoDoenca" value="Doença" required>
+              <label class="form-check-label" for="tipoDoenca">Doença</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tipo" id="tipoPraga" value="Praga">
+              <label class="form-check-label" for="tipoPraga">Praga</label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Descrição</label>
+          <textarea name="descricao" class="form-control" placeholder="Descrição" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-plus-circle me-1"></i>Cadastrar
+        </button>
+      </form>
+    </div>
+    <div class="container my-3">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <input type="text" id="buscaDoenca" class="form-control" placeholder="Buscar por nome da doença..." />
+        </div>
+      </div>
+    </div>
+    <table id="tabela-doencas" class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <!-- Aba Fazenda -->
-  <div id="aba-fazenda" class="tab">
-    <div id="acoes-fazenda" class="restrito">
-      <div class="aba-header">
-        <h2 id="titulo-fazenda">Cadastro de Fazenda</h2>
-      </div>
-
-      <div id="cadastro-fazenda">
-        <form id="form-fazenda">
-          <input name="nomefazenda" placeholder="Nome da Fazenda" required />
-          <input name="cidade" placeholder="Cidade" required />
-          <input name="regiao" placeholder="Região" required />
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
-
-      <table id="tabela-fazendas">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Cidade</th>
-            <th>Região</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div id="aba-fazenda" class="tab mt-3">
+    <div class="aba-header">
+      <h2 id="titulo-fazenda">Cadastro de Fazenda</h2>
     </div>
+
+    <div id="cadastro-fazenda" class="border rounded p-4 bg-light mb-3">
+      <form id="form-fazenda">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Nome da Fazenda</label>
+            <input name="nomefazenda" class="form-control" placeholder="Nome da Fazenda" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Cidade</label>
+            <input name="cidade" class="form-control" placeholder="Cidade" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Região</label>
+            <input name="regiao" class="form-control" placeholder="Região" required />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-plus-circle me-1"></i>Cadastrar
+        </button>
+      </form>
+    </div>
+
+    <table id="tabela-fazendas" class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cidade</th>
+          <th>Região</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
   </div>
 
   <!-- Aba Ocorrência -->
-  <div id="aba-ocorrencia" class="tab">
-    <div id="acoes-ocorrencia" class="restrito">
-      <div class="aba-header">
-        <h2 id="titulo-ocorrencia">Cadastro de Ocorrência</h2>
-      </div>
-
-      <div id="cadastro-ocorrencia">
-        <form id="form-ocorrencia">
-          <input name="numero" placeholder="Número da Ocorrência" required />
-          <select name="estacao" required>
-            <option value="">Selecione a Estação</option>
-            <option value="Primavera">Primavera</option>
-            <option value="Verão">Verão</option>
-            <option value="Outono">Outono</option>
-            <option value="Inverno">Inverno</option>
-          </select>
-          <input name="clima" placeholder="Clima" required />
-          <input name="descricao" placeholder="Descrição" required />
-          <select id="fazendaid" name="fazendaid" required></select>
-          <select id="doencaid" name="doencaid" required></select>
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
-
-      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
-        <select id="filtroOcorrenciaCampo">
-          <option value="numero">Número</option>
-          <option value="doenca">Doença</option>
-          <option value="clima">Clima</option>
-          <option value="fazenda">Fazenda</option>
-          <option value="estacao">Estação</option>
-        </select>
-
-        <input type="text" id="buscaOcorrencia" placeholder="Buscar ocorrência...">
-      </div>
-
-      <table id="tabela-ocorrencias">
-        <thead>
-          <tr>
-            <th>Número</th>
-            <th>Estação</th>
-            <th>Clima</th>
-            <th>Descrição</th>
-            <th>Fazenda</th>
-            <th>Doença</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div id="aba-ocorrencia" class="tab mt-3">
+    <div class="aba-header">
+      <h2 id="titulo-ocorrencia">Cadastro de Ocorrência</h2>
     </div>
+
+    <div id="cadastro-ocorrencia" class="border rounded p-4 bg-light mb-3">
+      <form id="form-ocorrencia">
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Número da Ocorrência</label>
+            <input name="numero" class="form-control" placeholder="Número da Ocorrência" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Estação</label>
+            <select name="estacao" class="form-select" required>
+              <option value="">Selecione a Estação</option>
+              <option value="Primavera">Primavera</option>
+              <option value="Verão">Verão</option>
+              <option value="Outono">Outono</option>
+              <option value="Inverno">Inverno</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Clima</label>
+            <input name="clima" class="form-control" placeholder="Clima" required />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <label class="form-label">Descrição</label>
+            <textarea name="descricao" class="form-control" placeholder="Descrição" rows="3" required></textarea>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Fazenda</label>
+            <select id="fazendaid" name="fazendaid" class="form-select" required></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Doença</label>
+            <select id="doencaid" name="doencaid" class="form-select" required></select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-plus-circle me-1"></i>Cadastrar
+        </button>
+      </form>
+    </div>
+
+    <div class="container my-3">
+      <div class="row justify-content-center">
+        <div class="col-md-3 mb-2">
+          <select id="filtroOcorrenciaCampo" class="form-select">
+            <option value="numero">Número</option>
+            <option value="doenca">Doença</option>
+            <option value="clima">Clima</option>
+            <option value="fazenda">Fazenda</option>
+            <option value="estacao">Estação</option>
+          </select>
+        </div>
+        <div class="col-md-5 mb-2">
+          <input type="text" id="buscaOcorrencia" class="form-control" placeholder="Buscar ocorrência...">
+        </div>
+      </div>
+    </div>
+
+
+    <table id="tabela-ocorrencias" class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Estação</th>
+          <th>Clima</th>
+          <th>Descrição</th>
+          <th>Fazenda</th>
+          <th>Doença</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <!-- Modal Doenca -->
-  <div id="modal-doenca" class="modal hidden">
-    <div class="modal-content">
-      <h3>Editar Doenca</h3>
-      <input type="hidden" id="modal-doenca-id" />
-      <input id="modal-doenca-nome" placeholder="Nome" />
-      <select id="modal-doenca-tipo">
-        <option value="Doença">Doença</option>
-        <option value="Praga">Praga</option>
-      </select>
-      <input id="modal-doenca-descricao" placeholder="Descricao" />
-      <button onclick="salvarEdicaoDoenca()">Salvar</button>
-      <button onclick="document.getElementById('modal-doenca').classList.add('hidden')">Cancelar</button>
+  <div class="modal fade" id="modal-doenca" tabindex="-1" aria-labelledby="modalDoencaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form onsubmit="event.preventDefault(); salvarEdicaoDoenca();">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalDoencaLabel">Editar Doença</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="modal-doenca-id" />
+
+            <div class="row mb-3">
+              <!-- Campo Nome -->
+              <div class="col-md-6">
+                <label for="modal-doenca-nome" class="form-label">Nome</label>
+                <input id="modal-doenca-nome" class="form-control" placeholder="Nome" required />
+              </div>
+
+              <!-- Campo Tipo -->
+              <div class="col-md-6">
+                <label class="form-label d-block">Tipo</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="modal-tipo" id="modal-tipo-doenca" value="Doença"
+                    required>
+                  <label class="form-check-label" for="modal-tipo-doenca">Doença</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="modal-tipo" id="modal-tipo-praga" value="Praga">
+                  <label class="form-check-label" for="modal-tipo-praga">Praga</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="modal-doenca-descricao" class="form-label">Descrição</label>
+              <textarea id="modal-doenca-descricao" class="form-control" placeholder="Descrição" rows="3"
+                required></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+
+
 
   <!-- Modal Fazenda -->
-  <div id="modal-fazenda" class="modal hidden">
-    <div class="modal-content">
-      <h3>Editar Fazenda</h3>
-      <input type="hidden" id="modal-fazenda-id" />
-      <input id="modal-fazenda-nome" placeholder="Nome" />
-      <input id="modal-fazenda-cidade" placeholder="Cidade"></input>
-      <input id="modal-fazenda-regiao" placeholder="Hectares" />
-      <button onclick="salvarEdicaoFazenda()">Salvar</button>
-      <button onclick="document.getElementById('modal-fazenda').classList.add('hidden')">Cancelar</button>
+  <div class="modal fade" id="modal-fazenda" tabindex="-1" aria-labelledby="modalFazendaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form onsubmit="event.preventDefault(); salvarEdicaoFazenda();">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalFazendaLabel">Editar Fazenda</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="modal-fazenda-id" />
+            <div class="mb-3">
+              <label for="modal-fazenda-nome" class="form-label">Nome</label>
+              <input id="modal-fazenda-nome" class="form-control" placeholder="Nome" required />
+            </div>
+            <div class="mb-3">
+              <label for="modal-fazenda-cidade" class="form-label">Cidade</label>
+              <input id="modal-fazenda-cidade" class="form-control" placeholder="Cidade" required />
+            </div>
+            <div class="mb-3">
+              <label for="modal-fazenda-regiao" class="form-label">Região</label>
+              <input id="modal-fazenda-regiao" class="form-control" placeholder="Região" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+
 
   <!-- Modal Ocorrencia -->
-  <div id="modal-ocorrencia" class="modal hidden">
-    <div class="modal-content">
-      <h3>Editar Ocorrencia</h3>
-      <input type="hidden" id="modal-ocorrencia-id" />
-      <input id="modal-ocorrencia-numero" placeholder="Numero" />
-      <select id="modal-ocorrencia-estacao">
-        <option value="">Estação</option>
-        <option value="Primavera">Primavera</option>
-        <option value="Verão">Verão</option>
-        <option value="Outono">Outono</option>
-        <option value="Inverno">Inverno</option>
-      </select>
-      <input id="modal-ocorrencia-clima" placeholder="Clima" />
-      <input id="modal-ocorrencia-descricao" placeholder="Descricao" />
-      <select id="modal-ocorrencia-fazenda"></select>
-      <select id="modal-ocorrencia-doenca"></select>
-      <input type="date" id="modal-ocorrencia-data" placeholder="Data" />
-      <button onclick="salvarEdicaoOcorrencia()">Salvar</button>
-      <button onclick="document.getElementById('modal-ocorrencia').classList.add('hidden')">Cancelar</button>
+  <div class="modal fade" id="modal-ocorrencia" tabindex="-1" aria-labelledby="modalOcorrenciaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form onsubmit="event.preventDefault(); salvarEdicaoOcorrencia();">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalOcorrenciaLabel">Editar Ocorrência</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="modal-ocorrencia-id" />
+            <div class="mb-3">
+              <label for="modal-ocorrencia-numero" class="form-label">Número</label>
+              <input id="modal-ocorrencia-numero" class="form-control" placeholder="Número" required />
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-estacao" class="form-label">Estação</label>
+              <select id="modal-ocorrencia-estacao" class="form-select" required>
+                <option value="">Selecione</option>
+                <option value="Primavera">Primavera</option>
+                <option value="Verão">Verão</option>
+                <option value="Outono">Outono</option>
+                <option value="Inverno">Inverno</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-clima" class="form-label">Clima</label>
+              <input id="modal-ocorrencia-clima" class="form-control" placeholder="Clima" required />
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-descricao" class="form-label">Descrição</label>
+              <input id="modal-ocorrencia-descricao" class="form-control" placeholder="Descrição" required />
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-fazenda" class="form-label">Fazenda</label>
+              <select id="modal-ocorrencia-fazenda" class="form-select" required></select>
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-doenca" class="form-label">Doença</label>
+              <select id="modal-ocorrencia-doenca" class="form-select" required></select>
+            </div>
+            <div class="mb-3">
+              <label for="modal-ocorrencia-data" class="form-label">Data</label>
+              <input type="date" id="modal-ocorrencia-data" class="form-control" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
+  <!-- Relatório -->
+  <div class="modal fade" id="modal-relatorio" tabindex="-1" aria-labelledby="relatorioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="relatorioLabel">Relatório de Ocorrências</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped table-secondary">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Doença</th>
+                <th>Fazenda</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-relatorio-corpo">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
   <script src="script.js"></script>
 </body>
 

@@ -1,8 +1,15 @@
 const token = sessionStorage.getItem("token");
 
 function showTab(tabId) {
+
   document.querySelectorAll('.tab').forEach(tab => tab.classList.add('hidden'));
   document.getElementById(tabId).classList.remove('hidden');
+
+  document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+  const activeLink = [...document.querySelectorAll('.nav-link')].find(link =>
+    link.getAttribute('onclick')?.includes(tabId)
+  );
+  if (activeLink) activeLink.classList.add('active');
 
   if (tabId === 'aba-doenca') {
     carregarDoencas();
@@ -17,13 +24,14 @@ function showTab(tabId) {
   }
 }
 
+
 document.getElementById('form-doenca').addEventListener('submit', async function (e) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(this));
 
   const response = await fetch('http://localhost:8080/newdoenca', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   });
 
@@ -45,7 +53,8 @@ async function carregarDoencas() {
   if (updateSelect) updateSelect.innerHTML = '<option value="">Selecione o ID</option>';
 
   const response = await fetch('http://localhost:8080/doencas', {
-    headers: {'Authorization': 'Bearer ' + token}});
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
   if (!response.ok) return;
 
   const doencas = await response.json();
@@ -53,8 +62,8 @@ async function carregarDoencas() {
   doencas.forEach(d => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${d.nome}</td><td>${d.tipo}</td><td>${d.descricao}</td>
-      <td><button onclick="editarDoenca('${d.id}')">Editar</button>
-          <button onclick="deletarDoenca('${d.id}')">Deletar</button></td>`;
+      <td><button onclick="editarDoenca('${d.id}')" class="btn btn-info btn-sm text-white"><i class="bi bi-pencil-square me-1"></i>Editar</button>
+          <button onclick="deletarDoenca('${d.id}')" class="btn btn-danger btn-sm"><i class="bi bi-trash3 me-1"></i>Deletar</button></td>`;
     tabela.appendChild(tr);
 
     if (select) {
@@ -87,7 +96,7 @@ document.getElementById('form-fazenda').addEventListener('submit', async functio
 
   const response = await fetch('http://localhost:8080/newfazenda', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   });
 
@@ -110,7 +119,8 @@ async function carregarFazendas() {
   if (updateSelect) updateSelect.innerHTML = '<option value="">Selecione o ID</option>';
 
   const response = await fetch('http://localhost:8080/fazendas', {
-    headers: {'Authorization': 'Bearer ' + token}});
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
   if (!response.ok) return;
 
   const fazendas = await response.json();
@@ -118,8 +128,8 @@ async function carregarFazendas() {
   fazendas.forEach(f => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${f.nomefazenda}</td><td>${f.cidade}</td><td>${f.regiao}</td>
-    <td><button onclick="editarFazenda('${f.id}')">Editar</button>
-          <button onclick="deletarFazenda('${f.id}')">Deletar</button></td>`;
+    <td><button onclick="editarFazenda('${f.id}')" class="btn btn-info btn-sm text-white"><i class="bi bi-pencil-square me-1"></i>Editar</button>
+          <button onclick="deletarFazenda('${f.id}')" class="btn btn-danger btn-sm"><i class="bi bi-trash3 me-1"></i>Deletar</button></td>`;
     tabela.appendChild(tr);
 
     const option = document.createElement('option');
@@ -148,7 +158,7 @@ document.getElementById('form-ocorrencia').addEventListener('submit', async func
 
   const response = await fetch('http://localhost:8080/newocorrencia', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   });
 
@@ -172,7 +182,8 @@ async function carregarOcorrencias() {
   if (selectDoe) selectDoe.innerHTML = '<option value="">Selecione a Doença</option>';
 
   const response = await fetch('http://localhost:8080/ocorrencias', {
-    headers: {'Authorization': 'Bearer ' + token}});
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
   if (!response.ok) return;
 
   const ocorrencias = await response.json();
@@ -187,8 +198,8 @@ async function carregarOcorrencias() {
       <td>${o.fazenda?.nomefazenda}</td>
       <td>${o.doenca?.nome}</td>
       <td>
-          <button onclick="editarOcorrencia('${o.id}')">Editar</button>
-          <button onclick="deletarOcorrencia('${o.id}')">Deletar</button>
+          <button onclick="editarOcorrencia('${o.id}')" class="btn btn-info btn-sm text-white"><i class="bi bi-pencil-square me-1"></i>Editar</button>
+          <button onclick="deletarOcorrencia('${o.id}')" class="btn btn-danger btn-sm"><i class="bi bi-trash3 me-1"></i>Deletar</button>
         </td>
     `;
     tabela.appendChild(tr);
@@ -199,7 +210,7 @@ async function carregarOcorrencias() {
     updateSelect?.appendChild(opt);
   });
 
-  const fazendas = await fetch('http://localhost:8080/fazendas', {headers: {'Authorization': 'Bearer ' + token}}).then(res => res.json());
+  const fazendas = await fetch('http://localhost:8080/fazendas', { headers: { 'Authorization': 'Bearer ' + token } }).then(res => res.json());
   fazendas.forEach(f => {
     const opt = document.createElement('option');
     opt.value = f.id;
@@ -207,7 +218,7 @@ async function carregarOcorrencias() {
     selectFaz?.appendChild(opt);
   });
 
-  const doencas = await fetch('http://localhost:8080/doencas', {headers: {'Authorization': 'Bearer ' + token}}).then(res => res.json());
+  const doencas = await fetch('http://localhost:8080/doencas', { headers: { 'Authorization': 'Bearer ' + token } }).then(res => res.json());
   doencas.forEach(d => {
     const opt = document.createElement('option');
     opt.value = d.id;
@@ -222,12 +233,13 @@ document.getElementById('buscaOcorrencia').addEventListener('input', function ()
   const linhas = document.querySelectorAll('#tabela-ocorrencias tbody tr');
 
   const indices = {
-    numero: 0,
-    estacao: 1,
-    clima: 2,
-    fazenda: 3,
-    doenca: 4
-  };
+  numero: 0,
+  estacao: 1,
+  clima: 2,
+  descricao: 3,
+  fazenda: 4, 
+  doenca: 5    
+};
 
   const indice = indices[campoSelecionado] ?? 0;
 
@@ -235,7 +247,7 @@ document.getElementById('buscaOcorrencia').addEventListener('input', function ()
     const texto = linha.children[indice]?.textContent.toLowerCase() || '';
     linha.style.display = texto.includes(filtro) ? '' : 'none';
   });
-  
+
 });
 document.getElementById('filtroOcorrenciaCampo').addEventListener('change', function () {
   const campoBusca = document.getElementById('buscaOcorrencia');
@@ -249,7 +261,7 @@ document.getElementById("btn-logout")?.addEventListener("click", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  showTab('aba-mapa');
+  showTab('aba-ocorrencia');
 });
 
 document.getElementById("btn-logout").addEventListener("click", () => {
@@ -331,12 +343,17 @@ function agendarVacina(cidade, doenca) {
   alert(`Redirecionando para agendamento de vacina contra ${doenca} em ${cidade}.`);
 }
 
+const modalDoenca = new bootstrap.Modal(document.getElementById('modal-doenca'));
+const modalFazenda = new bootstrap.Modal(document.getElementById('modal-fazenda'));
+const modalOcorrencia = new bootstrap.Modal(document.getElementById('modal-ocorrencia'));
+
+
 async function editarOcorrencia(id) {
   try {
     const [ocorrenciaResp, fazendasResp, doencasResp] = await Promise.all([
-      fetch(`http://localhost:8080/ocorrencia/${id}`, {headers: {'Authorization': 'Bearer ' + token}}),
-      fetch("http://localhost:8080/fazendas", {headers: {'Authorization': 'Bearer ' + token}}),
-      fetch("http://localhost:8080/doencas", {headers: {'Authorization': 'Bearer ' + token}})
+      fetch(`http://localhost:8080/ocorrencia/${id}`, { headers: { 'Authorization': 'Bearer ' + token } }),
+      fetch("http://localhost:8080/fazendas", { headers: { 'Authorization': 'Bearer ' + token } }),
+      fetch("http://localhost:8080/doencas", { headers: { 'Authorization': 'Bearer ' + token } })
     ]);
 
     if (!ocorrenciaResp.ok) throw new Error("Ocorrência não encontrada");
@@ -371,8 +388,7 @@ async function editarOcorrencia(id) {
       if (d.id === ocorrencia.doencaid || d.id === ocorrencia.doenca?.id) opt.selected = true;
       doencaSelect.appendChild(opt);
     });
-
-    document.getElementById('modal-ocorrencia').classList.remove('hidden');
+      modalOcorrencia.show();
   } catch (error) {
     alert("Erro ao carregar ocorrência: " + error.message);
   }
@@ -393,23 +409,25 @@ function salvarEdicaoOcorrencia() {
 
   fetch(`http://localhost:8080/updateocorrencia/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token},
+    headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (!response.ok) throw new Error("Falha ao editar");
-    alert("Ocorrência atualizada com sucesso!");
-    document.getElementById('modal-ocorrencia').classList.add('hidden');
-    carregarOcorrencias();
-  })
-  .catch(error => {
-    alert("Erro ao atualizar: " + error.message);
-  });
+    .then(response => {
+      if (!response.ok) throw new Error("Falha ao editar");
+      alert("Ocorrência atualizada com sucesso!");
+      modalOcorrencia.hide();
+      carregarOcorrencias();
+    })
+    .catch(error => {
+      alert("Erro ao atualizar: " + error.message);
+    });
 }
 
 
 function editarDoenca(id) {
-  fetch(`http://localhost:8080/doenca/${id}`, {headers: {'Authorization': 'Bearer ' + token}})
+  fetch(`http://localhost:8080/doenca/${id}`, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
     .then(response => {
       if (!response.ok) throw new Error("Não encontrado");
       return response.json();
@@ -417,12 +435,16 @@ function editarDoenca(id) {
     .then(data => {
       document.getElementById('modal-doenca-id').value = data.id;
       document.getElementById('modal-doenca-nome').value = data.nome;
-      document.getElementById('modal-doenca-tipo').value = data.tipo;
       document.getElementById('modal-doenca-descricao').value = data.descricao;
-      document.getElementById('modal-doenca').classList.remove('hidden');
+      if (data.tipo === "Doença") {
+        document.getElementById('modal-tipo-doenca').checked = true;
+      } else if (data.tipo === "Praga") {
+        document.getElementById('modal-tipo-praga').checked = true;
+      }
+      modalDoenca.show();
     })
     .catch(error => {
-      alert("Erro ao carregar doenca: " + error.message);
+      alert("Erro ao carregar doença: " + error.message);
     });
 }
 
@@ -430,27 +452,27 @@ function salvarEdicaoDoenca() {
   const id = document.getElementById('modal-doenca-id').value;
   const data = {
     nome: document.getElementById('modal-doenca-nome').value,
-    tipo: document.getElementById('modal-doenca-tipo').value,
+    tipo: document.querySelector('input[name="modal-tipo"]:checked').value,
     descricao: document.getElementById('modal-doenca-descricao').value
   };
   fetch(`http://localhost:8080/updatedoenca/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json",'Authorization': 'Bearer ' + token},
+    headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (!response.ok) throw new Error("Falha ao editar");
-    alert("Doenca atualizada com sucesso!");
-    document.getElementById('modal-doenca').classList.add('hidden');
-    carregarDoencas();
-  })
-  .catch(error => {
-    alert("Erro ao atualizar: " + error.message);
-  });
+    .then(response => {
+      if (!response.ok) throw new Error("Falha ao editar");
+      alert("Doenca atualizada com sucesso!");
+      modalDoenca.hide();
+      carregarDoencas();
+    })
+    .catch(error => {
+      alert("Erro ao atualizar: " + error.message);
+    });
 }
 
 function editarFazenda(id) {
-  fetch(`http://localhost:8080/fazenda/${id}`, {headers: {'Authorization': 'Bearer ' + token}})
+  fetch(`http://localhost:8080/fazenda/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
     .then(response => {
       if (!response.ok) throw new Error("Não encontrado");
       return response.json();
@@ -460,7 +482,7 @@ function editarFazenda(id) {
       document.getElementById('modal-fazenda-nome').value = data.nomefazenda;
       document.getElementById('modal-fazenda-cidade').value = data.cidade;
       document.getElementById('modal-fazenda-regiao').value = data.regiao;
-      document.getElementById('modal-fazenda').classList.remove('hidden');
+      modalFazenda.show();
     })
     .catch(error => {
       alert("Erro ao carregar fazenda: " + error.message);
@@ -476,22 +498,22 @@ function salvarEdicaoFazenda() {
   };
   fetch(`http://localhost:8080/updatefazenda/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token},
+    headers: { "Content-Type": "application/json", 'Authorization': 'Bearer ' + token },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (!response.ok) throw new Error("Falha ao editar");
-    alert("Fazenda atualizada com sucesso!");
-    document.getElementById('modal-fazenda').classList.add('hidden');
-    carregarFazendas();
-  })
-  .catch(error => {
-    alert("Erro ao atualizar: " + error.message);
-  });
+    .then(response => {
+      if (!response.ok) throw new Error("Falha ao editar");
+      alert("Fazenda atualizada com sucesso!");
+      modalFazenda.hide();
+      carregarFazendas();
+    })
+    .catch(error => {
+      alert("Erro ao atualizar: " + error.message);
+    });
 }
 
 async function deletarDoenca(id) {
-  const ocorrencias = await fetch("http://localhost:8080/ocorrencias", {headers: {'Authorization': 'Bearer ' + token}}).then(res => res.json());
+  const ocorrencias = await fetch("http://localhost:8080/ocorrencias", { headers: { 'Authorization': 'Bearer ' + token } }).then(res => res.json());
   const relacionadas = ocorrencias.some(ocorrencia => ocorrencia.doenca.id === id);
 
   if (relacionadas.length > 0) {
@@ -501,17 +523,17 @@ async function deletarDoenca(id) {
   }
   await fetch(`http://localhost:8080/deletedoenca/${id}`, {
     method: "DELETE",
-    headers: {'Authorization': 'Bearer ' + token}
+    headers: { 'Authorization': 'Bearer ' + token }
   })
-  .then(() => {
-    carregarDoencas();
-    carregarOcorrencias();
-  });
+    .then(() => {
+      carregarDoencas();
+      carregarOcorrencias();
+    });
 }
 
 
 async function deletarFazenda(id) {
-  const ocorrencias = await fetch("http://localhost:8080/ocorrencias", { credentials: "include" }).then(res => res.json());
+  const ocorrencias = await fetch("http://localhost:8080/ocorrencias", {headers: { 'Authorization': 'Bearer ' + token }}).then(res => res.json());
   const relacionadas = ocorrencias.some(ocorrencia => ocorrencia.fazenda.id === id);
 
   if (relacionadas.length > 0) {
@@ -521,12 +543,12 @@ async function deletarFazenda(id) {
   }
   await fetch(`http://localhost:8080/deletefazenda/${id}`, {
     method: "DELETE",
-    headers: {'Authorization': 'Bearer ' + token}
+    headers: { 'Authorization': 'Bearer ' + token }
   })
-  .then(() => {
-    carregarFazendas();
-    carregarOcorrencias();
-  });
+    .then(() => {
+      carregarFazendas();
+      carregarOcorrencias();
+    });
 }
 
 
@@ -534,12 +556,48 @@ function deletarOcorrencia(id) {
   if (!confirm("Tem certeza que deseja deletar esta Ocorrência?")) return;
   fetch(`http://localhost:8080/deleteocorrencia/${id}`, {
     method: "DELETE",
-    headers: {'Authorization': 'Bearer ' + token}
+    headers: { 'Authorization': 'Bearer ' + token }
   })
-  .then(res => {
-    if (!res.ok) throw new Error("Erro ao deletar");
-    alert("Ocorrência deletada com sucesso.");
-    carregarOcorrencias();
-  })
-  .catch(err => alert("Erro ao deletar ocorrência: " + err.message));
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao deletar");
+      alert("Ocorrência deletada com sucesso.");
+      carregarOcorrencias();
+    })
+    .catch(err => alert("Erro ao deletar ocorrência: " + err.message));
 }
+
+function abrirRelatorio() {
+  fetch('http://localhost:8080/ocorrencias', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("Erro ao buscar ocorrências");
+      return response.json();
+    })
+    .then(data => {
+      const corpoTabela = document.getElementById('tabela-relatorio-corpo');
+      corpoTabela.innerHTML = '';
+
+      // Ordenar por data decrescente (mais recente primeiro)
+      data.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+      data.forEach(ocorrencia => {
+        const linha = document.createElement('tr');
+        linha.innerHTML = `
+          <td>${new Date(ocorrencia.data).toLocaleDateString()}</td>
+          <td>${ocorrencia.doenca?.nome || ''}</td>
+          <td>${ocorrencia.fazenda?.nomefazenda || ''}</td>
+          <td>${ocorrencia.descricao || ''}</td>
+        `;
+        corpoTabela.appendChild(linha);
+      });
+
+      // Abrir modal
+      const modal = new bootstrap.Modal(document.getElementById('modal-relatorio'));
+      modal.show();
+    })
+    .catch(error => {
+      alert("Erro ao carregar relatório: " + error.message);
+    });
+}
+

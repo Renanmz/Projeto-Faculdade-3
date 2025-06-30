@@ -23,22 +23,26 @@ header h1 {
   gap: 10px;
 }
 
-nav {
-  background-color: #3fa76d;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+.custom-tabs .nav-link {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  margin-right: 5px;
+  border-radius: 4px 4px 0 0;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease-in-out;
 }
 
-nav button {
-  padding: 10px 20px;
+.custom-tabs .nav-link:hover {
+  background-color: #e2e2e2;
+  color: #000;
+}
+
+.custom-tabs .nav-link.active {
+  background-color: #fff;
+  border-bottom: 1px solid white;
   font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  background-color: #2e8658;
-  color: white;
-  cursor: pointer;
+  color: #000;
 }
 
 main {
@@ -61,18 +65,6 @@ th {
   background-color: #d4edda;
 }
 
-form {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-input,
-button[type="submit"] {
-  padding: 6px;
-  font-size: 14px;
-}
 
 .tab {
   padding: 20px;
@@ -83,109 +75,8 @@ button[type="submit"] {
   display: none !important;
 }
 
-.aba-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.aba-header .botoes-acoes {
-  display: flex;
-  gap: 8px;
-}
-
 .aba-header h2 {
-  margin: 0;
-}
-
-.btn-atualizar {
-  padding: 6px 12px;
-  font-size: 14px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px;
-  height: 32px;
-}
-
-.btn-atualizar:hover {
-  background-color: #0056b3;
-}
-
-.btn-deletar {
-  background-color: #e53935;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  margin-left: 10px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.btn-deletar:hover {
-  background-color: #c62828;
-}
-
-.btn-cadastrar {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  margin-left: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.busca-doenca,
-.busca-ocorrencia {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.busca-doenca input,
-.busca-ocorrencia input {
-  padding: 10px 20px;
-  border: 2px solid black;
-  border-radius: 20px;
-  font-size: 16px;
-  width: 250px;
-  text-align: center;
-}
-
-.mensagem-login {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.mensagem-login button {
-  background-color: #007bff;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-login {
-  padding: 8px 16px;
-  background-color: #1c5fb4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-login:hover {
-  background-color: #154a8c;
+  margin-bottom: 1.5rem; 
 }
 
 .btn-logout {
@@ -200,10 +91,6 @@ button[type="submit"] {
 
 .btn-logout:hover {
   background-color: #871a1a;
-}
-
-.ocultar-cadastro-h2 {
-  display: none !important;
 }
 
 .modal {
