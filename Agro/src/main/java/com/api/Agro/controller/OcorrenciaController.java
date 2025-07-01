@@ -116,6 +116,7 @@ public class OcorrenciaController {
 	    ocorrenciaToUpdate.setNumero(agrorecorddto.numero());
 	    ocorrenciaToUpdate.setEstacao(agrorecorddto.estacao());
 	    ocorrenciaToUpdate.setClima(agrorecorddto.clima());
+	    ocorrenciaToUpdate.setStatus(agrorecorddto.status());
 	    ocorrenciaToUpdate.setDescricao(agrorecorddto.descricao());
 	    ocorrenciaToUpdate.setFazenda(fazenda);
 	    ocorrenciaToUpdate.setDoenca(doenca);

@@ -32,6 +32,9 @@ public class OcorrenciaModel implements Serializable  {
 	@Column(nullable = false, length = 70)
 	private String clima;
 	
+	@Column(nullable = false, length = 70)
+	private String status;
+	
 	@Lob 
 	@Column(columnDefinition = "text")
 	private String descricao;
@@ -110,6 +113,16 @@ public class OcorrenciaModel implements Serializable  {
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 	
 	

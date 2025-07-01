@@ -151,6 +151,7 @@ document.getElementById('form-ocorrencia').addEventListener('submit', async func
     numero: formData.get('numero'),
     estacao: formData.get('estacao'),
     clima: formData.get('clima'),
+    status: formData.get('status'),
     descricao: formData.get('descricao'),
     fazendaid: parseInt(formData.get('fazendaid')),
     doencaid: parseInt(formData.get('doencaid'))
@@ -194,6 +195,7 @@ async function carregarOcorrencias() {
       <td>${o.numero}</td>
       <td>${o.estacao}</td>
       <td>${o.clima}</td>
+      <td>${o.status}</td>
       <td>${o.descricao}</td>
       <td>${o.fazenda?.nomefazenda}</td>
       <td>${o.doenca?.nome}</td>
@@ -366,6 +368,7 @@ async function editarOcorrencia(id) {
     document.getElementById('modal-ocorrencia-numero').value = ocorrencia.numero;
     document.getElementById('modal-ocorrencia-estacao').value = ocorrencia.estacao;
     document.getElementById('modal-ocorrencia-clima').value = ocorrencia.clima;
+    document.getElementById('modal-ocorrencia-status').value = ocorrencia.status;
     document.getElementById('modal-ocorrencia-descricao').value = ocorrencia.descricao;
     document.getElementById('modal-ocorrencia-data').value = ocorrencia.data;
 
@@ -401,6 +404,7 @@ function salvarEdicaoOcorrencia() {
     numero: document.getElementById('modal-ocorrencia-numero').value,
     estacao: document.getElementById('modal-ocorrencia-estacao').value,
     clima: document.getElementById('modal-ocorrencia-clima').value,
+    status: document.getElementById('modal-ocorrencia-status').value,
     descricao: document.getElementById('modal-ocorrencia-descricao').value,
     fazendaid: document.getElementById('modal-ocorrencia-fazenda').value,
     doencaid: document.getElementById('modal-ocorrencia-doenca').value,
